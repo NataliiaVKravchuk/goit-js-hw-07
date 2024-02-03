@@ -11,28 +11,28 @@ const refs = {
   input: document.querySelector("input"),
 };
 
-
 const { box, buttonCreate, buttonDestroy, input } = refs;
 
-buttonCreate.addEventListener("click", onClick);
-buttonDestroy.addEventListener("click", onClick);
+let inputValue = 0;
 
-function onClick(e) {
-  if (!box.children.length) {
-    createBoxes(input.value);
-    return;
-  }
-  destroyBoxes();
-}
+input.addEventListener("change", function (event) {
+  inputValue = input.value;
+});
 
+buttonCreate.addEventListener("click", function () {
+  destroyBoxes(); // Always delete previous blocks first
+  createBoxes(parseInt(inputValue));
+});
+buttonDestroy.addEventListener("click", destroyBoxes);
 
 function createBoxes(amount) {
+  if (isNaN(amount) || amount < 1 || amount > 100) {
+    return;
+  }
 
-if (isNaN(amount) || amount < 1 || amount > 100) {
-  return;
-}
   let size = 30;
   const array = [];
+
   for (let index = 1; index <= amount; index += 1) {
     const div = document.createElement("div");
     div.style.width = `${size}px`;
